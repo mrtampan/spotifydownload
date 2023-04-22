@@ -20,4 +20,4 @@ tutorial get client_id and client_secret: https://cran.r-project.org/web/package
 
 ## Thank To
 
-(Spotifydl)[https://github.com/AlenVelocity/spotifydl-core]
+[Spotifydl](https://github.com/AlenVelocity/spotifydl-core)
