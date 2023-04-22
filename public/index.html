@@ -1,0 +1,124 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/nprogress@0.2.0/nprogress.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              clifford: '#da373d',
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body>
+    <div class="p-8">
+      <h1 class="text-center text-xl">Spotify Download</h1>
+      <div class="grid gap-4">
+        <div class="">
+          <label
+            for="artist"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Artist</label
+          >
+          <input
+            type="text"
+            id="artist"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            value="https://open.spotify.com/artist/7n2Ycct7Beij7Dj7meI4X0"
+            required
+          />
+        </div>
+        <div class="">
+          <label
+            for="album"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Album</label
+          >
+          <input
+            type="text"
+            id="album"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            value="https://open.spotify.com/album/7hzP5i7StxYG4StECA0rrJ"
+            required
+          />
+        </div>
+        <div class="">
+          <label
+            for="song"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Song</label
+          >
+          <input
+            type="text"
+            id="song"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            value="https://open.spotify.com/track/4OtVQ2ZxS7yigIjGz5yKg1"
+            required
+          />
+        </div>
+
+        <div class="flex w-50">
+          <button
+            onclick="downloadbtn()"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Submit
+          </button>
+        </div>
+
+        <div class="mt-8">
+          <label
+            for="result"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Hasil</label
+          >
+          <input
+            type="text"
+            id="result"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder=""
+          />
+        </div>
+      </div>
+    </div>
+    <script>
+      function downloadbtn() {
+        NProgress.start();
+        const formData = new FormData();
+        formData.append('artist', document.getElementById('artist').value);
+        formData.append('album', document.getElementById('album').value);
+        formData.append('song', document.getElementById('song').value);
+        fetch(window.location.origin + '/download', {
+          method: 'POST',
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            alert('Berhasil');
+            document
+              .getElementById('result')
+              .setAttribute(
+                'value',
+                window.location.origin + '/' + result.result
+              );
+            NProgress.done();
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+            alert(error);
+          });
+      }
+    </script>
+  </body>
+</html>
