@@ -84,15 +84,17 @@ const runningServer = async () => {
     let songname = '';
     const album = await spotify.getAlbum(links.album);
     let musicList = [];
+    const dunludAlbum = await spotify.downloadAlbum(links.album);
+    const trackAlbum = await spotify.getTracksFromAlbum(links.album);
 
-    album.tracks.forEach(async (item) => {
-      const data = await spotify.getTrack(item); // Waiting for the data 🥱
-      console.log('Downloading: ', data.name, 'by:', data.artists.join(' ')); // Keep an eye on the progress
-      const song = await spotify.downloadTrack(item); // Downloading goes brr brr
-      console.log('Downloading skuyyy: ', song); // Keep an eye on the progress
-      fs.writeFileSync('./public/result/' + data.name + '.mp3', song); // Let's write the buffer to the woofer (i mean file, hehehe)
-      console.log('Berhasil Download: ', data.name);
+    album.tracks.forEach(async (item, index) => {
+      console.log(trackAlbum.tracks[index]);
+      fs.writeFileSync(
+        './public/result/' + trackAlbum.tracks[index].name + '.mp3',
+        dunludAlbum[index]
+      ); // Let's write the buffer to the woofer (i mean file, hehehe)
     });
+
     await res.send({ result: 'result/' });
   });
 };
